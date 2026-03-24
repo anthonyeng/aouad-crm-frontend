@@ -449,11 +449,10 @@ export default function ListingDetailsPage() {
       listingId
     )}`;
   };
-
   const onWhatsApp = () => {
     if (!waPhone) return;
 
-    const shareUrl = `https://aouad-crm-backend.onrender.com/listing/${item?.id || id}`;
+    const shareUrl = `https://aouad.co/listing/${item?.id || id}`;
     const msg = encodeURIComponent(
       `Hi, I'm interested in this property (${item?.title || "listing"}). Could you please share more details?\n\n${shareUrl}`
     );
