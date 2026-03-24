@@ -1,7 +1,7 @@
 // src/pages/ListingDetailsPage.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { FaCamera, FaWhatsapp, FaCalendarAlt } from "react-icons/fa";
+import { FaCamera, FaWhatsapp, FaCalendarAlt, FaShareAlt } from "react-icons/fa";
 import { FaBed, FaBath, FaCar, FaRulerCombined } from "react-icons/fa";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
@@ -107,26 +107,19 @@ async function fetchJsonWithTimeout(url, { signal, timeoutMs = 8000 } = {}) {
 }
 
 async function loadFxRatesEurBased(signal) {
-  // 1) Backend proxy (optional)
   try {
     const proxyUrl = `${API_BASE}/fx/latest?from=EUR&to=USD,AED`;
     const d = await fetchJsonWithTimeout(proxyUrl, { signal, timeoutMs: 5000 });
     const rates = d?.rates || d;
     if (rates?.USD && rates?.AED) return rates;
-  } catch {
-    // ignore
-  }
+  } catch { }
 
-  // 2) Frankfurter
   try {
     const url = `${FX_PROVIDER_FRANKFURTER}/latest?from=EUR&to=USD,AED`;
     const d = await fetchJsonWithTimeout(url, { signal });
     if (d?.rates?.USD && d?.rates?.AED) return d.rates;
-  } catch {
-    // ignore
-  }
+  } catch { }
 
-  // 3) ER-API fallback (base EUR)
   const d2 = await fetchJsonWithTimeout(FX_PROVIDER_ERAPI, { signal });
   const r2 = d2?.rates;
   if (r2?.USD && r2?.AED) return { USD: r2.USD, AED: r2.AED };
@@ -147,9 +140,6 @@ export default function ListingDetailsPage() {
   const [fxTo, setFxTo] = useState("USD");
   const [fx, setFx] = useState({ loading: true, err: "", rates: {} });
 
-  /* =========================
-     ✅ Schedule-a-call lead form state
-  ========================= */
   const [leadForm, setLeadForm] = useState({
     firstName: "",
     lastName: "",
@@ -161,7 +151,6 @@ export default function ListingDetailsPage() {
   const [leadSent, setLeadSent] = useState(false);
   const [leadErr, setLeadErr] = useState("");
 
-  // ✅ fetch FX once (robust: multiple providers)
   useEffect(() => {
     const ac = new AbortController();
 
@@ -179,7 +168,6 @@ export default function ListingDetailsPage() {
     return () => ac.abort();
   }, []);
 
-  // ✅ fetch listing
   useEffect(() => {
     let alive = true;
 
@@ -215,8 +203,6 @@ export default function ListingDetailsPage() {
         completionYear: raw.completionYear || raw.handover || raw.completion_date || "",
         addressText: raw.addressText || raw.address || raw.location || "",
         community: raw.community || raw.area || "",
-
-        // ✅ brochure url normalization (supports multiple possible backend field names)
         brochureUrl:
           raw.brochureUrl ||
           raw.brochureURL ||
@@ -318,7 +304,6 @@ export default function ListingDetailsPage() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lbOpen, imgs.length]);
 
   const formatSize = (it) => {
@@ -376,19 +361,13 @@ export default function ListingDetailsPage() {
     return { currency: fxTo, amount: conv };
   }, [canConvert, baseAmount, baseCcy, fxTo, fx.loading, fx.err, fx.rates]);
 
-  // ✅ BROCHURE: reliable click handler
   const onBrochure = () => {
     const url = String(item?.brochureUrl || "").trim();
     if (!url) return;
 
-    // remove later if you want:
-    console.log("Downloading brochure:", url);
-
-    // try open in new tab
     const w = window.open(url, "_blank", "noopener,noreferrer");
     if (w) return;
 
-    // fallback: programmatic click
     const a = document.createElement("a");
     a.href = url;
     a.target = "_blank";
@@ -439,6 +418,7 @@ export default function ListingDetailsPage() {
   const agentId = pickAgentId(item);
   const listingId = item?.id || id || "";
   const waPhone = pickAgentPhone(item);
+  const shareUrl = `https://aouad.co/listing/${listingId}`;
 
   const onScheduleCall = () => {
     if (!agentId) {
@@ -449,16 +429,40 @@ export default function ListingDetailsPage() {
       listingId
     )}`;
   };
+
   const onWhatsApp = () => {
     if (!waPhone) return;
 
-    const shareUrl = `https://aouad.co/listing/${item?.id || id}`;
     const msg = encodeURIComponent(
       `Hi, I'm interested in this property (${item?.title || "listing"}). Could you please share more details?\n\n${shareUrl}`
     );
 
     window.open(`https://wa.me/${waPhone}?text=${msg}`, "_blank", "noopener,noreferrer");
   };
+
+  const onShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: item?.title || "Property Listing",
+          text: `Check out this property${item?.title ? `: ${item.title}` : ""}`,
+          url: shareUrl,
+        });
+        return;
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Listing link copied");
+        return;
+      }
+
+      window.prompt("Copy this link:", shareUrl);
+    } catch (e) {
+      console.error("Share failed:", e);
+    }
+  };
+
   const onSubmitLead = async (e) => {
     e.preventDefault();
     setLeadErr("");
@@ -538,7 +542,6 @@ export default function ListingDetailsPage() {
             <h1 className="ld-title">{item.title}</h1>
             <div className="ld-sub">{item.developerName || ""}</div>
 
-            {/* PRICE + converter */}
             <div className="ld-fromRow">
               <div className="ld-fromText">
                 {baseAmount && baseAmount > 0 && displayPrice
@@ -629,6 +632,15 @@ export default function ListingDetailsPage() {
                   title={waPhone ? "WhatsApp agent" : "WhatsApp number not set"}
                 >
                   <FaWhatsapp className="ld-ico" />
+                </button>
+
+                <button
+                  className="ld-ico-btn"
+                  type="button"
+                  onClick={onShare}
+                  title="Share listing"
+                >
+                  <FaShareAlt className="ld-ico" />
                 </button>
               </div>
             </div>
