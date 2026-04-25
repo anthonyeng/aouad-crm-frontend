@@ -1,5 +1,6 @@
 // src/App.jsx
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 /* ===== PUBLIC LAYOUT (has Header/Footer) ===== */
 import Header from "./Header.jsx";
@@ -47,6 +48,16 @@ import AgentSettingsPage from "./agent/pages/AgentSettingsPage.jsx";
 
 /* ===== HOME PAGE ===== */
 function HomePage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const listingId = sessionStorage.getItem("_goto_listing");
+    if (listingId) {
+      sessionStorage.removeItem("_goto_listing");
+      navigate(`/listing/${listingId}`, { replace: true });
+    }
+  }, [navigate]);
+
   return (
     <>
       <Hero />
