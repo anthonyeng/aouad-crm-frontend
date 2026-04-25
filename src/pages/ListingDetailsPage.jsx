@@ -419,9 +419,7 @@ export default function ListingDetailsPage() {
   const agentId = pickAgentId(item);
   const listingId = item?.id || id || "";
   const waPhone = pickAgentPhone(item);
-  // Clean URL for clipboard sharing
-  const shareUrl = `https://aouad.co/listing/${listingId}`;
-  // Backend OG URL — WhatsApp scrapes this for the listing title + image preview
+  // Backend OG URL — WhatsApp scrapes this for the listing title + image preview, and redirects browsers to the listing
   const ogUrl = `https://aouad-crm-backend.onrender.com/listing/${listingId}`;
 
   const onScheduleCall = () => {
