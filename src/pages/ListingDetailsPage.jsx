@@ -419,7 +419,10 @@ export default function ListingDetailsPage() {
   const agentId = pickAgentId(item);
   const listingId = item?.id || id || "";
   const waPhone = pickAgentPhone(item);
+  // Clean URL for clipboard sharing
   const shareUrl = `https://aouad.co/listing/${listingId}`;
+  // Backend OG URL — WhatsApp scrapes this for the listing title + image preview
+  const ogUrl = `https://aouad-crm-backend.onrender.com/listing/${listingId}`;
 
   const onScheduleCall = () => {
     if (!agentId) {
@@ -435,7 +438,7 @@ export default function ListingDetailsPage() {
     if (!waPhone) return;
 
     const msg = encodeURIComponent(
-      `Hi, I'm interested in this property (${item?.title || "listing"}). Could you please share more details?\n\n${shareUrl}`
+      `Hi, I'm interested in this property (${item?.title || "listing"}). Could you please share more details?\n\n${ogUrl}`
     );
 
     window.open(`https://wa.me/${waPhone}?text=${msg}`, "_blank", "noopener,noreferrer");
