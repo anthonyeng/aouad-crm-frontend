@@ -447,9 +447,9 @@ export default function ListingDetailsPage() {
   const onShare = async () => {
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(shareUrl);
+        await navigator.clipboard.writeText(ogUrl);
       } else {
-        window.prompt("Copy this link:", shareUrl);
+        window.prompt("Copy this link:", ogUrl);
       }
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
