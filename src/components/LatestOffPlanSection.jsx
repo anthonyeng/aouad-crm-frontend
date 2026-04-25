@@ -220,6 +220,7 @@ function CardsCarousel({ items }) {
                     src={imgUrl}
                     alt={p.title || "Off-plan property"}
                     loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
                     }}

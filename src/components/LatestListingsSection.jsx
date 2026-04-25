@@ -329,7 +329,7 @@ function CardsCarousel({ items }) {
           >
             <div className="ll-media">
               {x.img ? (
-                <img className="ll-img" src={x.img} alt={x.name} />
+                <img className="ll-img" src={x.img} alt={x.name} loading="lazy" decoding="async" />
               ) : (
                 <div className="ll-img" style={{ background: "#eee" }} />
               )}

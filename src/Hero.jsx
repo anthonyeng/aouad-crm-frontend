@@ -88,9 +88,13 @@ export default function Hero() {
     return (
         <section className="hero">
             <div className="hero-bg">
-                <div
+                <img
                     className="hero-slide"
-                    style={{ backgroundImage: `url(${bgImage})` }}
+                    src={bgImage}
+                    alt=""
+                    fetchpriority="high"
+                    loading="eager"
+                    decoding="async"
                 />
                 <div className="hero-overlay" />
             </div>
