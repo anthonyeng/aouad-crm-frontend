@@ -150,6 +150,7 @@ export default function ListingDetailsPage() {
   const [leadSending, setLeadSending] = useState(false);
   const [leadSent, setLeadSent] = useState(false);
   const [leadErr, setLeadErr] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -442,24 +443,15 @@ export default function ListingDetailsPage() {
 
   const onShare = async () => {
     try {
-      if (navigator.share) {
-        await navigator.share({
-          title: item?.title || "Property Listing",
-          text: `Check out this property${item?.title ? `: ${item.title}` : ""}`,
-          url: shareUrl,
-        });
-        return;
-      }
-
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(shareUrl);
-        alert("Listing link copied");
-        return;
+      } else {
+        window.prompt("Copy this link:", shareUrl);
       }
-
-      window.prompt("Copy this link:", shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
     } catch (e) {
-      console.error("Share failed:", e);
+      console.error("Copy failed:", e);
     }
   };
 
@@ -643,6 +635,7 @@ export default function ListingDetailsPage() {
                   <FaShareAlt className="ld-ico" />
                 </button>
               </div>
+              {copied && <div className="ld-copy-toast">Link copied!</div>}
             </div>
 
             <div className="ld-section">

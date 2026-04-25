@@ -1,5 +1,27 @@
 /* src/pages/listingDetailsPage.css */
 
+/* ===== COPY TOAST ===== */
+.ld-copy-toast {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 10px;
+    padding: 6px 14px;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 20px;
+    animation: ld-fade-in-out 2.5s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes ld-fade-in-out {
+    0%   { opacity: 0; transform: translateY(4px); }
+    15%  { opacity: 1; transform: translateY(0); }
+    75%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 /* ===== PAGE ===== */
 .ld {
     background: #fff;
