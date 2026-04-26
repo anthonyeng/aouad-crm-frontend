@@ -420,7 +420,7 @@ export default function ListingDetailsPage() {
   const listingId = item?.id || id || "";
   const waPhone = pickAgentPhone(item);
   // Clean shareable URL — Render proxies to backend for OG scraping, browsers handled via sessionStorage
-  const ogUrl = `https://aouad.co/listing/${listingId}`;
+  const ogUrl = `https://og.aouad.co/listing/${listingId}`;
 
   const onScheduleCall = () => {
     if (!agentId) {
