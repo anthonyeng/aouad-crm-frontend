@@ -4,10 +4,3 @@ services:
     env: static
     buildCommand: npm install && npm run build
     staticPublishPath: dist
-    routes:
-      - type: redirect
-        source: /listing/*
-        destination: https://aouad-crm-backend.onrender.com/listing/:splat
-      - type: rewrite
-        source: /*
-        destination: /index.html
