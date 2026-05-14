@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./sellPropertyPage.css";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
-import heroBg from "../assets/Colleyville-real-estate.jpg";
+import heroBg from "../assets/sell-hero.jpg";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
 
