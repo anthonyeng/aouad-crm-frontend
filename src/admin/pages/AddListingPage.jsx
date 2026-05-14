@@ -56,11 +56,59 @@ function fileExt(file) {
   return name.slice(dot + 1).toLowerCase();
 }
 
+/**
+ * Compress an image file using canvas.
+ * Skips non-image files (e.g. PDFs).
+ * Max dimension 2048px, JPEG quality 0.8 → typically < 1 MB.
+ */
+function compressImage(file, maxDim = 2048, quality = 0.8) {
+  if (!file.type.startsWith("image/")) return Promise.resolve(file);
+
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width <= maxDim && height <= maxDim && file.size < 2 * 1024 * 1024) {
+        URL.revokeObjectURL(img.src);
+        return resolve(file); // already small enough
+      }
+      if (width > maxDim || height > maxDim) {
+        const ratio = Math.min(maxDim / width, maxDim / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => {
+          URL.revokeObjectURL(img.src);
+          if (!blob) return resolve(file);
+          const compressed = new File([blob], file.name, {
+            type: "image/jpeg",
+            lastModified: file.lastModified,
+          });
+          resolve(compressed);
+        },
+        "image/jpeg",
+        quality,
+      );
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(img.src);
+      resolve(file);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 async function putToSignedUrl(uploadUrl, file) {
+  const toUpload = await compressImage(file);
   const res = await fetch(uploadUrl, {
     method: "PUT",
-    headers: { "Content-Type": file.type || "application/octet-stream" },
-    body: file,
+    headers: { "Content-Type": toUpload.type || "application/octet-stream" },
+    body: toUpload,
   });
   if (!res.ok) throw new Error("Failed to upload file to storage");
 }
@@ -987,24 +1035,16 @@ export default function AddListingPage() {
       const hasNewMedia = !!coverFile || galleryFiles.length > 0;
 
       if (!editingId || hasNewMedia) {
-        const filesForPresign = [
-          ...(coverFile
-            ? [
-              {
-                contentType: coverFile.type || "application/octet-stream",
-                ext: fileExt(coverFile),
-                isCover: true,
-                sizeBytes: coverFile.size,
-              },
-            ]
-            : []),
-          ...galleryFiles.map((f) => ({
-            contentType: f.type || "application/octet-stream",
-            ext: fileExt(f),
-            isCover: false,
-            sizeBytes: f.size,
-          })),
-        ];
+        // Compress images before presign so sizes/types are accurate
+        const rawFiles = [...(coverFile ? [coverFile] : []), ...galleryFiles];
+        const compressed = await Promise.all(rawFiles.map((f) => compressImage(f)));
+
+        const filesForPresign = compressed.map((f, i) => ({
+          contentType: f.type || "application/octet-stream",
+          ext: f.type === "image/jpeg" ? "jpg" : fileExt(f),
+          isCover: coverFile ? i === 0 : false,
+          sizeBytes: f.size,
+        }));
 
         if (filesForPresign.length > 0) {
           const presignRes = await fetch(`${API_BASE}/uploads/presign`, {
@@ -1022,10 +1062,13 @@ export default function AddListingPage() {
           const uploads = presignJson.uploads || [];
           if (!uploads.length) throw new Error("No uploads returned from presign");
 
-          const allFilesInOrder = [...(coverFile ? [coverFile] : []), ...galleryFiles];
-
           for (let i = 0; i < uploads.length; i++) {
-            await putToSignedUrl(uploads[i].uploadUrl, allFilesInOrder[i]);
+            const res = await fetch(uploads[i].uploadUrl, {
+              method: "PUT",
+              headers: { "Content-Type": compressed[i].type || "application/octet-stream" },
+              body: compressed[i],
+            });
+            if (!res.ok) throw new Error("Failed to upload file to storage");
           }
 
           const saveRes = await fetch(`${API_BASE}/uploads/listing/${listingId}/images`, {

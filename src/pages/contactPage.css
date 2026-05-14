@@ -211,11 +211,9 @@
 }
 
 .contact-flag {
-    width: 18px;
-    height: 12px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, #00732f 0 33%, #fff 33% 66%, #000 66% 100%);
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08);
+    width: 22px;
+    height: 15px;
+    flex-shrink: 0;
 }
 
 .contact-phone__caret {

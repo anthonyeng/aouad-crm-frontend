@@ -33,6 +33,7 @@ import OurTeamPage from "./pages/OurTeamPage.jsx";
 import MortgageCalculatorPage from "./pages/MortgageCalculatorPage.jsx";
 import ListingDetailsPage from "./pages/ListingDetailsPage.jsx";
 import TeamMemberPage from "./pages/TeamMemberPage.jsx";
+import SellPropertyPage from "./pages/SellPropertyPage.jsx";
 
 /* ===== AUTH ===== */
 import LoginPage from "./pages/LoginPage.jsx";
@@ -45,6 +46,7 @@ import AgentLeadsPage from "./agent/pages/AgentLeadsPage.jsx";
 import AgentListingsPage from "./agent/pages/AgentListingsPage.jsx";
 import AgentSchedulePage from "./agent/pages/AgentSchedulePage.jsx";
 import AgentSettingsPage from "./agent/pages/AgentSettingsPage.jsx";
+import AgentSellRequestsPage from "./agent/pages/AgentSellRequestsPage.jsx";
 
 /* ===== HOME PAGE ===== */
 function HomePage() {
@@ -99,6 +101,7 @@ function PublicApp() {
         <Route path="/mortgage-calculator" element={<MortgageCalculatorPage />} />
         <Route path="/team/:slug" element={<TeamMemberPage />} />
         <Route path="/schedule-call" element={<ScheduleCallPage />} />
+        <Route path="/sell" element={<SellPropertyPage />} />
 
         {/* 404 inside public layout */}
         <Route
@@ -148,6 +151,7 @@ export default function App() {
         <Route index element={<AgentDashboardPage />} />
         <Route path="leads" element={<AgentLeadsPage />} />
         <Route path="listings" element={<AgentListingsPage />} />
+        <Route path="sell-requests" element={<AgentSellRequestsPage />} />
         <Route path="schedule" element={<AgentSchedulePage />} />
         <Route path="settings" element={<AgentSettingsPage />} />
       </Route>

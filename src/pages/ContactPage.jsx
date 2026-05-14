@@ -135,7 +135,14 @@ export default function ContactPage() {
                                     <label className="contact-label">Phone *</label>
                                     <div className="contact-phone">
                                         <div className="contact-phone__prefix">
-                                            <span className="contact-flag" aria-hidden="true" />
+                                            <svg className="contact-flag" viewBox="0 0 900 600" aria-hidden="true">
+                                                <rect width="900" height="600" fill="#fff"/>
+                                                <rect width="900" height="200" fill="#ed1c24"/>
+                                                <rect y="400" width="900" height="200" fill="#ed1c24"/>
+                                                <g transform="translate(450,300) scale(0.24)">
+                                                    <path d="M0,-400 L60,-100 L200,-200 L120,0 L250,100 L60,80 L0,400 L-60,80 L-250,100 L-120,0 L-200,-200 L-60,-100 Z" fill="#00732f"/>
+                                                </g>
+                                            </svg>
                                             <span>+961</span>
                                             <span className="contact-phone__caret">▾</span>
                                         </div>

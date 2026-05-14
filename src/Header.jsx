@@ -88,6 +88,11 @@ export default function Header() {
                                 <div className="menu-title">For Rent</div>
                                 <div className="menu-subtitle">Apartment and villas for rent</div>
                             </Link>
+
+                            <Link className="menu-item" to="/sell">
+                                <div className="menu-title">Sell Your Property</div>
+                                <div className="menu-subtitle">List your property with our agent</div>
+                            </Link>
                         </div>
                     </div>
 
@@ -210,6 +215,15 @@ export default function Header() {
                     >
                         Schedule a Call
                     </Link>
+
+                    {/* Sell Your Property */}
+                    <Link
+                        to="/sell"
+                        className="nav-item nav-item--pill"
+                        onClick={() => window.scrollTo(0, 0)}
+                    >
+                        Sell Your Property
+                    </Link>
                 </nav>
 
                 {/* ACTIONS */}
@@ -282,6 +296,9 @@ export default function Header() {
                         <Link className="m-sub m-sub--desc" to="/rent" onClick={closeMobile}>
                             For Rent <span>Apartment and villas for rent</span>
                         </Link>
+                        <Link className="m-sub m-sub--desc" to="/sell" onClick={closeMobile}>
+                            Sell Your Property <span>List your property with our agent</span>
+                        </Link>
                     </MobileAccRow>
 
                     <MobileAccRow
@@ -347,8 +364,12 @@ export default function Header() {
                         </Link>
                     </MobileAccRow>
 
-                    <Link className="m-main" to="/schedule-call" onClick={closeMobile}>
+                    <Link className="m-main-btn" to="/schedule-call" onClick={closeMobile}>
                         Schedule a Call
+                    </Link>
+
+                    <Link className="m-main-btn" to="/sell" onClick={closeMobile}>
+                        Sell Your Property
                     </Link>
                 </div>
 

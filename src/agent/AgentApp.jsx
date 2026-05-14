@@ -10,6 +10,7 @@ import {
     FaCalendarAlt,
     FaCog,
     FaSearch,
+    FaTag,
 } from "react-icons/fa";
 import "./agent.css";
 import { decodeJwt, logout } from "../lib/auth";
@@ -18,6 +19,7 @@ const NAV = [
     { to: "/agent", label: "Dashboard", icon: FaHome, end: true },
     { to: "/agent/leads", label: "Leads", icon: FaUsers },
     { to: "/agent/listings", label: "My Listings", icon: FaBuilding },
+    { to: "/agent/sell-requests", label: "Sell Requests", icon: FaTag },
     { to: "/agent/schedule", label: "Schedule", icon: FaCalendarAlt },
     { to: "/agent/settings", label: "Settings", icon: FaCog },
 ];
@@ -37,6 +39,7 @@ function usePageTitle() {
         if (pathname === "/agent") return "Dashboard";
         if (pathname.startsWith("/agent/leads")) return "Leads";
         if (pathname.startsWith("/agent/listings")) return "My Listings";
+        if (pathname.startsWith("/agent/sell-requests")) return "Sell Requests";
         if (pathname.startsWith("/agent/schedule")) return "Schedule";
         if (pathname.startsWith("/agent/settings")) return "Settings";
         return "Agent";
