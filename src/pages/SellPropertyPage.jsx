@@ -99,36 +99,6 @@ export default function SellPropertyPage() {
                                     const propertyLocation = fd.get("propertyLocation");
                                     const details = fd.get("details");
 
-                                    try {
-                                        const res = await fetch(`${API_BASE}/public/sell-request`, {
-                                            method: "POST",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify({
-                                                firstName,
-                                                lastName,
-                                                email,
-                                                phone,
-                                                phoneCode,
-                                                propertyType,
-                                                propertyLocation,
-                                                details,
-                                                pageUrl: window.location.href,
-                                            }),
-                                        });
-                                        if (res.ok) {
-                                            setSubmitted(true);
-                                            e.target.reset();
-                                        } else {
-                                            const data = await res.json().catch(() => ({}));
-                                            alert(data.error || "Something went wrong.");
-                                        }
-                                    } catch {
-                                        alert("Network error. Please try again.");
-                                    } finally {
-                                        setSubmitting(false);
-                                    }
-
-                                    // Send WhatsApp message with form details
                                     const waPhone = agentPhone.replace(/[\s+\-()]/g, "");
                                     const msg = [
                                         `Hello ${agentName},`,
@@ -147,6 +117,7 @@ export default function SellPropertyPage() {
                                         `https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`,
                                         "_blank"
                                     );
+                                    setSubmitting(false);
                                 }}
                             >
                                 {submitted ? (
