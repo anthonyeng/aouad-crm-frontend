@@ -84,10 +84,10 @@ export default function Header() {
                                 <div className="menu-subtitle">Apartment and villas for sale</div>
                             </Link>
 
-                            <Link className="menu-item" to="/rent">
+                            {/* <Link className="menu-item" to="/rent">
                                 <div className="menu-title">For Rent</div>
                                 <div className="menu-subtitle">Apartment and villas for rent</div>
-                            </Link>
+                            </Link> */}
 
                             <Link className="menu-item" to="/sell">
                                 <div className="menu-title">Sell Your Property</div>
@@ -293,9 +293,9 @@ export default function Header() {
                         <Link className="m-sub m-sub--desc" to="/sale" onClick={closeMobile}>
                             For Sale <span>Apartment and villas for sale</span>
                         </Link>
-                        <Link className="m-sub m-sub--desc" to="/rent" onClick={closeMobile}>
+                        {/* <Link className="m-sub m-sub--desc" to="/rent" onClick={closeMobile}>
                             For Rent <span>Apartment and villas for rent</span>
-                        </Link>
+                        </Link> */}
                         <Link className="m-sub m-sub--desc" to="/sell" onClick={closeMobile}>
                             Sell Your Property <span>List your property with our agent</span>
                         </Link>

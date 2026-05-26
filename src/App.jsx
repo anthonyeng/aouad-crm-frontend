@@ -86,7 +86,7 @@ function PublicApp() {
 
         {/* LISTINGS */}
         <Route path="/off-plan" element={<OffPlanPage />} />
-        <Route path="/rent" element={<ForRentPage />} />
+        {/* <Route path="/rent" element={<ForRentPage />} /> */}
         <Route path="/sale" element={<ForSalePage />} />
         <Route path="/listings" element={<ListingsPage />} />
 

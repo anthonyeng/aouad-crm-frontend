@@ -67,7 +67,8 @@ function formatCardPrice(p) {
 }
 
 function isListingItem(item) {
-  return item?.listingType === "FOR_SALE" || item?.listingType === "FOR_RENT";
+  // return item?.listingType === "FOR_SALE" || item?.listingType === "FOR_RENT";
+  return item?.listingType === "FOR_SALE";
 }
 
 function sortByFeaturedOrder(a, b) {
@@ -111,7 +112,7 @@ export default function LatestListingsSection({ mode = "all" }) {
 
   const onPick = (value) => {
     setDdOpen(false);
-    if (value === "For Rent") navigate("/rent");
+    // if (value === "For Rent") navigate("/rent");
     if (value === "For Sale") navigate("/sale");
   };
 
@@ -233,10 +234,10 @@ export default function LatestListingsSection({ mode = "all" }) {
             </button>
 
             <div className="ll-menu" role="menu" aria-hidden={!ddOpen}>
-              <button className="ll-menuItem" onClick={() => onPick("For Rent")}>
+              {/* <button className="ll-menuItem" onClick={() => onPick("For Rent")}>
                 For Rent
               </button>
-              <div className="ll-menuDivider" />
+              <div className="ll-menuDivider" /> */}
               <button className="ll-menuItem" onClick={() => onPick("For Sale")}>
                 For Sale
               </button>
