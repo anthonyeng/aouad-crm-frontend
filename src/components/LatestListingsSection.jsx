@@ -178,10 +178,10 @@ export default function LatestListingsSection({ mode = "all" }) {
 
           price: p.priceLabel || formatCardPrice(p),
 
-          location:
-            p.location ||
-            [p.country, p.city, p.area].filter(Boolean).join(", ") ||
-            "-",
+          location: (() => {
+            const parts = (p.location || [p.country, p.city, p.area].filter(Boolean).join(", ") || "-").split(", ");
+            return parts.filter((v, i) => parts.findIndex(p => p.toLowerCase() === v.toLowerCase()) === i).join(", ");
+          })(),
 
           beds: p.bedrooms ?? "-",
           baths: p.bathrooms ?? "-",
