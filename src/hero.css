@@ -20,7 +20,7 @@
     width: 100% !important;
     height: 100% !important;
     object-fit: cover;
-    object-position: center;
+    object-position: center 70%;
     transform: scale(1.02);
 }
 
