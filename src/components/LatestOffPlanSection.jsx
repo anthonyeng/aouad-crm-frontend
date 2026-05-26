@@ -255,9 +255,11 @@ function CardsCarousel({ items }) {
                   <div className="lop-meta-row">
                     <FaMapMarkerAlt className="lop-mini" />
                     <span>
-                      {p.location ||
-                        [p.country, p.city, p.area].filter(Boolean).join(", ") ||
-                        "-"}
+                      {(() => {
+                        const parts = (p.location || [p.country, p.city, p.area].filter(Boolean).join(", ") || "-").split(", ");
+                        const unique = parts.filter((v, i) => parts.findIndex(p => p.toLowerCase() === v.toLowerCase()) === i);
+                        return unique.join(", ");
+                      })()}
                     </span>
                   </div>
 
