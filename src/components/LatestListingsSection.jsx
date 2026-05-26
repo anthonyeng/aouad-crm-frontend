@@ -222,27 +222,13 @@ export default function LatestListingsSection({ mode = "all" }) {
         <div className="ll-top">
           <h2 className="lop-title">{title}</h2>
 
-          <div className={"ll-dd" + (ddOpen ? " is-open" : "")} ref={ddRef}>
-            <button
-              className="ll-viewall"
-              type="button"
-              aria-haspopup="menu"
-              aria-expanded={ddOpen}
-              onClick={() => setDdOpen((v) => !v)}
-            >
-              View All <FaChevronDown className="ll-chev" />
-            </button>
-
-            <div className="ll-menu" role="menu" aria-hidden={!ddOpen}>
-              {/* <button className="ll-menuItem" onClick={() => onPick("For Rent")}>
-                For Rent
-              </button>
-              <div className="ll-menuDivider" /> */}
-              <button className="ll-menuItem" onClick={() => onPick("For Sale")}>
-                For Sale
-              </button>
-            </div>
-          </div>
+          <button
+            className="ll-viewall"
+            type="button"
+            onClick={() => navigate("/sale")}
+          >
+            View All
+          </button>
         </div>
 
         {loading ? <CardsSkeleton /> : <CardsCarousel items={items} />}
