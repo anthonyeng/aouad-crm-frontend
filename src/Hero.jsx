@@ -9,7 +9,7 @@ import img1 from "./assets/carousel2.webp";
 
 const IMAGES = [img1];
 
-const LISTING_TYPES = ["Off plan", "For sale", "For rent"];
+const LISTING_TYPES = ["Off plan", "Ready to move in"];
 const PROPERTY_TYPES = ["Any type", "Apartment", "Villa", "Townhouse", "Penthouse"];
 
 const COUNTRIES = [
@@ -25,8 +25,7 @@ const COUNTRIES = [
 
 const MAP_LISTING_TYPE = {
     "Off plan": "OFF_PLAN",
-    "For sale": "FOR_SALE",
-    "For rent": "FOR_RENT",
+    "Ready to move in": "FOR_SALE",
 };
 
 const MAP_PROPERTY_TYPE = {
