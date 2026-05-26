@@ -94,7 +94,9 @@ export default function Hero() {
                 </div>
 
                 <h1 className="hero-title">
-                    <span>Exceptional Real Estate. Curated For Life.</span>
+                    <span>Exceptional Real Estate.</span>
+                    <br />
+                    <span>Curated For Life.</span>
                 </h1>
 
                 <div className="hero-search" ref={rootRef}>
