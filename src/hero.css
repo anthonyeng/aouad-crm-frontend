@@ -222,6 +222,9 @@
 @media (max-width: 900px) {
     .hero-search {
         flex-direction: column;
+        padding: 10px;
+        border-radius: 10px;
+        gap: 6px;
     }
 
     .hero-divider {
@@ -232,6 +235,19 @@
     .hero-field,
     .hero-btn {
         width: 100%;
+    }
+
+    .hero-field {
+        padding: 10px 12px;
+        font-size: 14px;
+        gap: 10px;
+    }
+
+    .hero-btn {
+        height: 44px;
+        font-size: 14px;
+        border-radius: 10px;
+        min-width: unset;
     }
 
     .hero-menu {
