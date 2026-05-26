@@ -1,13 +1,9 @@
 // src/components/Hero.jsx
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import "./hero.css";
 
-/* ✅ ONLY ONE IMAGE */
-import img1 from "./assets/hero-bg.jpg";
-
-const IMAGES = [img1];
 
 const LISTING_TYPES = ["Off plan", "Ready to move in"];
 const PROPERTY_TYPES = ["Any type", "Apartment", "Villa", "Townhouse", "Penthouse"];
@@ -39,12 +35,6 @@ const MAP_PROPERTY_TYPE = {
 export default function Hero() {
     const navigate = useNavigate();
     const rootRef = useRef(null);
-
-    /* still works, but always returns carousel2 */
-    const bgImage = useMemo(
-        () => IMAGES[Math.floor(Math.random() * IMAGES.length)],
-        []
-    );
 
     const [listingType, setListingType] = useState(LISTING_TYPES[0]);
     const [propertyType, setPropertyType] = useState(PROPERTY_TYPES[0]);
@@ -94,7 +84,6 @@ export default function Hero() {
                     loop
                     muted
                     playsInline
-                    poster={bgImage}
                 />
                 <div className="hero-overlay" />
             </div>
