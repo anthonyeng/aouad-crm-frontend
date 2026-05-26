@@ -3,7 +3,9 @@
 .hero {
     position: relative;
     width: 100%;
-    min-height: 720px;
+    height: 100vh;
+    min-height: 600px;
+    max-height: 900px;
     overflow: hidden;
 }
 
@@ -46,7 +48,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 720px;
+    height: 100%;
 }
 
 .hero-eyebrow {
@@ -326,11 +328,6 @@
     display: block;
 }
 
-@media (max-width: 900px) {
-    .hero-inner {
-        padding-top: 86px;
-    }
-}
 
 /* ===============================
    iOS Safari: remove blue tap highlight in HERO dropdown
