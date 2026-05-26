@@ -50,8 +50,8 @@ export default function Hero() {
     const [listingType, setListingType] = useState(LISTING_TYPES[0]);
     const [propertyType, setPropertyType] = useState(PROPERTY_TYPES[0]);
 
-    const [country, setCountry] = useState("dubai");
-    const [countryLabel, setCountryLabel] = useState("Dubai");
+    const [country, setCountry] = useState("lebanon");
+    const [countryLabel, setCountryLabel] = useState("Lebanon");
 
     const [open, setOpen] = useState(null);
 
