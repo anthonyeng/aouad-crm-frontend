@@ -353,7 +353,7 @@ function CardsCarousel({ items }) {
 function formatFromPrice(p) {
   const cur = p.currency || "USD";
   const n = Number(p.priceFrom ?? p.startingPrice ?? p.price ?? 0) || 0;
-  if (!n) return "";
+  if (!n) return "Price on request";
   return `From ${cur} ${n.toLocaleString()}`;
 }
 
