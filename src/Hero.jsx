@@ -87,13 +87,14 @@ export default function Hero() {
     return (
         <section className="hero">
             <div className="hero-bg">
-                <img
+                <video
                     className="hero-slide"
-                    src={bgImage}
-                    alt=""
-                    fetchpriority="high"
-                    loading="eager"
-                    decoding="async"
+                    src="/hero-video.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster={bgImage}
                 />
                 <div className="hero-overlay" />
             </div>
