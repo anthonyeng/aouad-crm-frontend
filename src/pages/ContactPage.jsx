@@ -75,7 +75,7 @@ export default function ContactPage() {
                             <a className="contact-social__btn" href="#" aria-label="Facebook">
                                 <FaFacebookF />
                             </a>
-                            <a className="contact-social__btn" href="#" aria-label="Instagram">
+                            <a className="contact-social__btn" href="https://www.instagram.com/aouadandco?igsh=MTlmc3N1eHA3ZjI3NQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                 <FaInstagram />
                             </a>
                             <a className="contact-social__btn" href="#" aria-label="LinkedIn">

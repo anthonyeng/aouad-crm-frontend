@@ -397,7 +397,7 @@ export default function Header() {
                     <a className="m-soc" href="#" aria-label="Facebook">
                         <FbIcon />
                     </a>
-                    <a className="m-soc" href="#" aria-label="Instagram">
+                    <a className="m-soc" href="https://www.instagram.com/aouadandco?igsh=MTlmc3N1eHA3ZjI3NQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                         <IgIcon />
                     </a>
                     <a className="m-soc" href="#" aria-label="LinkedIn">

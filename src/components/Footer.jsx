@@ -45,7 +45,7 @@ export default function Footer() {
                     </a>
 
                     <a
-                        href="https://www.instagram.com/aouad.co?igsh=MTlmc3N1eHA3ZjI3NQ=="
+                        href="https://www.instagram.com/aouadandco?igsh=MTlmc3N1eHA3ZjI3NQ=="
                         className="ft-soc"
                         aria-label="Instagram"
                         target="_blank"
