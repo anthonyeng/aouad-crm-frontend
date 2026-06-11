@@ -1,6 +1,29 @@
 // src/App.jsx
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
+
+function usePageViewTracker() {
+  const location = useLocation();
+  const prev = useRef(null);
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === prev.current) return;
+    if (path.startsWith("/admin") || path.startsWith("/agent") || path === "/login") return;
+    prev.current = path;
+
+    fetch(`${API_BASE}/public/pageview`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        path,
+        referrer: document.referrer || null,
+      }),
+    }).catch(() => {});
+  }, [location.pathname]);
+}
 
 /* ===== PUBLIC LAYOUT (has Header/Footer) ===== */
 import Header from "./Header.jsx";
@@ -123,6 +146,8 @@ function PublicApp() {
 }
 
 export default function App() {
+  usePageViewTracker();
+
   return (
     <Routes>
       {/* AUTH */}

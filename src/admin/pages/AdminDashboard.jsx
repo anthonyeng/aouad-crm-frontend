@@ -133,6 +133,7 @@ export default function AdminDashboard() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [views, setViews] = useState(null);
 
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [q, setQ] = useState("");
@@ -143,12 +144,20 @@ export default function AdminDashboard() {
       setErr("");
       try {
         const token = tokenOrThrow();
-        const res = await fetch(`${API_BASE}/admin/clients?limit=500`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data?.error || "Failed to load dashboard");
+        const [clientsRes, viewsRes] = await Promise.all([
+          fetch(`${API_BASE}/admin/clients?limit=500`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${API_BASE}/admin/pageviews`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+        const data = await clientsRes.json().catch(() => ({}));
+        if (!clientsRes.ok) throw new Error(data?.error || "Failed to load dashboard");
         setItems(Array.isArray(data?.items) ? data.items : []);
+
+        const viewsData = await viewsRes.json().catch(() => null);
+        if (viewsRes.ok && viewsData) setViews(viewsData);
       } catch (e) {
         console.error(e);
         setErr(e?.message || "Failed to load dashboard");
@@ -229,6 +238,16 @@ export default function AdminDashboard() {
 
   return (
     <div className="dash">
+      {/* Website Visitors */}
+      {views && (
+        <div className="dash-kpis">
+          <KPI label="Visitors Today" value={money(views.today)} sub="Page views" />
+          <KPI label="Last 7 Days" value={money(views.week)} sub="Page views" />
+          <KPI label="Last 30 Days" value={money(views.month)} sub="Page views" />
+          <KPI label="All Time" value={money(views.total)} sub="Total page views" />
+        </div>
+      )}
+
       {/* KPIs */}
       <div className="dash-kpis">
         <KPI label="Open Leads" value={stats.open} sub={`${stats.total} total`} />
@@ -405,6 +424,67 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
+
+        {/* Top Pages */}
+        {views?.topPages?.length > 0 && (
+          <div className="adm-card dash-card">
+            <div className="dash-head">
+              <div>
+                <div className="dash-title">Top Pages</div>
+                <div className="dash-sub">Most visited pages</div>
+              </div>
+            </div>
+
+            <div className="dash-bars">
+              {views.topPages.map((p) => (
+                <div key={p.path} className="dash-barRow">
+                  <div className="dash-barLabel" style={{ minWidth: 120 }}>{p.path}</div>
+                  <div className="dash-barTrack">
+                    <div
+                      className="dash-barFill"
+                      style={{ width: `${(p.count / views.topPages[0].count) * 100}%` }}
+                    />
+                  </div>
+                  <div className="dash-barVal">{money(p.count)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Daily Views Chart */}
+        {views?.daily?.length > 0 && (
+          <div className="adm-card dash-card dash-span2">
+            <div className="dash-head">
+              <div>
+                <div className="dash-title">Daily Visitors</div>
+                <div className="dash-sub">Page views per day (last 30 days)</div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 120, padding: "12px 0" }}>
+              {views.daily.map((d) => {
+                const max = Math.max(...views.daily.map((x) => x.count), 1);
+                const h = Math.max((d.count / max) * 100, 2);
+                const dateStr = String(d.date).slice(0, 10);
+                return (
+                  <div
+                    key={dateStr}
+                    title={`${dateStr}: ${d.count} views`}
+                    style={{
+                      flex: 1,
+                      height: `${h}%`,
+                      background: "var(--accent, #0f172a)",
+                      borderRadius: 2,
+                      minWidth: 4,
+                      cursor: "default",
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
