@@ -57,6 +57,7 @@ import MortgageCalculatorPage from "./pages/MortgageCalculatorPage.jsx";
 import ListingDetailsPage from "./pages/ListingDetailsPage.jsx";
 import TeamMemberPage from "./pages/TeamMemberPage.jsx";
 import SellPropertyPage from "./pages/SellPropertyPage.jsx";
+import ExhibitionBookingPage from "./pages/ExhibitionBookingPage.jsx";
 
 /* ===== AUTH ===== */
 import LoginPage from "./pages/LoginPage.jsx";
@@ -180,6 +181,9 @@ export default function App() {
         <Route path="schedule" element={<AgentSchedulePage />} />
         <Route path="settings" element={<AgentSettingsPage />} />
       </Route>
+
+      {/* EXHIBITION (standalone QR landing — no header/footer) */}
+      <Route path="/exhibition/:slug" element={<ExhibitionBookingPage />} />
 
       {/* EVERYTHING ELSE is your current website */}
       <Route path="/*" element={<PublicApp />} />

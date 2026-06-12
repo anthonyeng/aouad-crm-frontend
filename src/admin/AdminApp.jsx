@@ -19,6 +19,7 @@ import {
   FaBriefcase,
   FaQuoteRight,
   FaSortAmountDown,
+  FaCalendarCheck,
 } from "react-icons/fa";
 import "./admin.css";
 
@@ -39,6 +40,9 @@ const NAV = [
 
   // ✅ Client Stories
   { to: "/admin/client-stories", label: "Client Stories", icon: FaQuoteRight },
+
+  // Exhibitions
+  { to: "/admin/exhibitions", label: "Exhibitions", icon: FaCalendarCheck },
 
   // Careers
   { to: "/admin/careers", label: "Careers", icon: FaBriefcase },
@@ -68,6 +72,9 @@ function usePageTitle() {
 
     // ✅ Client Stories
     if (pathname.startsWith("/admin/client-stories")) return "Client Stories";
+
+    // Exhibitions
+    if (pathname.startsWith("/admin/exhibitions")) return "Exhibitions";
 
     // Careers
     if (pathname.startsWith("/admin/careers")) return "Careers";

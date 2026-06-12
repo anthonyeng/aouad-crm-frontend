@@ -19,6 +19,9 @@ import CareersAdminPage from "./pages/CareersAdminPage.jsx";
 // ✅ Client Stories (NEW PAGE)
 import ClientStoriesAdminPage from "./pages/ClientStoriesAdminPage.jsx";
 
+// Exhibitions
+import ExhibitionsAdminPage from "./pages/ExhibitionsAdminPage.jsx";
+
 export default function AdminRoutes() {
   return (
     <Routes>
@@ -43,6 +46,9 @@ export default function AdminRoutes() {
 
         {/* ✅ Careers */}
         <Route path="careers" element={<CareersAdminPage />} />
+
+        {/* Exhibitions */}
+        <Route path="exhibitions" element={<ExhibitionsAdminPage />} />
 
         {/* Settings */}
         <Route path="settings" element={<SettingsPage />} />
