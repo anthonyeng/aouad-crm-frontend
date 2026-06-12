@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import logo from "../assets/logo_real_state_gold.png";
 import "./ExhibitionBookingPage.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
@@ -101,7 +102,7 @@ export default function ExhibitionBookingPage() {
       <div className="exh">
         <div className="exh-card">
           <div className="exh-header">
-            <h1 className="exh-logo">AOUAD & CO</h1>
+            <img src={logo} alt="Aouad & Co" className="exh-logoImg" />
             <p className="exh-subtitle">VIP Exhibition</p>
           </div>
           <div className="exh-body exh-loading">
@@ -118,7 +119,7 @@ export default function ExhibitionBookingPage() {
       <div className="exh">
         <div className="exh-card">
           <div className="exh-header">
-            <h1 className="exh-logo">AOUAD & CO</h1>
+            <img src={logo} alt="Aouad & Co" className="exh-logoImg" />
             <p className="exh-subtitle">VIP Exhibition</p>
           </div>
           <div className="exh-body exh-notfound">
