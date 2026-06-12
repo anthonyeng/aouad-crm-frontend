@@ -19,13 +19,14 @@ function formatDate(ymd) {
 const FRONTEND_URL = "https://aouad.co";
 
 const DEFAULT_SLOTS = [
-  "10:00-11:00",
-  "11:00-12:00",
-  "12:00-13:00",
-  "13:00-14:00",
-  "14:00-15:00",
-  "15:00-16:00",
-  "16:00-17:00",
+  "10-11",
+  "11-12",
+  "12-1",
+  "2-3",
+  "3-4",
+  "4-5",
+  "5-6",
+  "6-7",
 ];
 
 function emptyForm() {
@@ -35,7 +36,7 @@ function emptyForm() {
     day1Date: "",
     day2Date: "",
     timeSlots: DEFAULT_SLOTS.join(", "),
-    maxPerSlot: 5,
+    maxPerSlot: 2,
     isActive: true,
   };
 }
