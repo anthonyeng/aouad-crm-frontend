@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
 import "./ExhibitionsAdminPage.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
@@ -50,6 +51,10 @@ export default function ExhibitionsAdminPage() {
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(emptyForm());
   const [saving, setSaving] = useState(false);
+
+  // QR modal
+  const [qrItem, setQrItem] = useState(null);
+  const qrRef = useRef(null);
 
   // bookings modal
   const [bookingsExh, setBookingsExh] = useState(null);
@@ -189,6 +194,15 @@ export default function ExhibitionsAdminPage() {
     navigator.clipboard.writeText(url).catch(() => {});
   }
 
+  function downloadQR() {
+    const canvas = qrRef.current?.querySelector("canvas");
+    if (!canvas) return;
+    const link = document.createElement("a");
+    link.download = `qr-${qrItem?.slug || "exhibition"}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+
   const filteredBookings = bookings.filter((b) => b.day === bookingsTab);
 
   if (loading) return <div className="exhAdmin-empty">Loading exhibitions...</div>;
@@ -231,6 +245,7 @@ export default function ExhibitionsAdminPage() {
                   <button className="is-primary" onClick={() => openBookings(item)}>
                     View Bookings
                   </button>
+                  <button onClick={() => setQrItem(item)}>QR Code</button>
                   <button onClick={() => openEdit(item)}>Edit</button>
                   <button className="is-danger" onClick={() => handleDelete(item.id)}>
                     Delete
@@ -288,6 +303,35 @@ export default function ExhibitionsAdminPage() {
                 <button type="submit" className="exh-save" disabled={saving}>{saving ? "Saving..." : "Save"}</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* QR CODE MODAL */}
+      {qrItem && (
+        <div className="exhAdmin-overlay" onClick={() => setQrItem(null)}>
+          <div className="exhAdmin-modal" onClick={(e) => e.stopPropagation()} style={{ textAlign: "center" }}>
+            <h2>QR Code — {qrItem.name}</h2>
+            <p style={{ color: "#888", fontSize: 13, marginBottom: 20 }}>
+              Scan to open the reservation page
+            </p>
+            <div ref={qrRef} style={{ display: "inline-block", padding: 16, background: "#fff", borderRadius: 12, border: "1px solid #eee" }}>
+              <QRCodeCanvas
+                value={`${FRONTEND_URL}/exhibition/${qrItem.slug}`}
+                size={280}
+                level="H"
+                includeMargin
+                bgColor="#ffffff"
+                fgColor="#1a1a2e"
+              />
+            </div>
+            <p style={{ color: "#555", fontSize: 12, marginTop: 12, wordBreak: "break-all" }}>
+              {FRONTEND_URL}/exhibition/{qrItem.slug}
+            </p>
+            <div className="exhAdmin-formActions" style={{ justifyContent: "center", marginTop: 16 }}>
+              <button type="button" className="exh-cancel" onClick={() => setQrItem(null)}>Close</button>
+              <button type="button" className="exh-save" onClick={downloadQR}>Download PNG</button>
+            </div>
           </div>
         </div>
       )}
