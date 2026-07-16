@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./careersPageSections.css";
+import { fbTrack } from "../lib/fbpixel.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
 
@@ -149,6 +150,8 @@ export default function CareersOpenPositions() {
 
             const data = await res.json().catch(() => ({}));
             if (!res.ok) throw new Error(data?.error || "Failed to submit application");
+
+            fbTrack("SubmitApplication", { content_name: selected?.title || "Career Application" });
 
             setSuccess(true);
         } catch (e2) {

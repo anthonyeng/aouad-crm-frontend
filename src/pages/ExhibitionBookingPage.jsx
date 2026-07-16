@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import logo from "../assets/logo_real_state_gold.png";
 import "./ExhibitionBookingPage.css";
+import { fbTrack } from "../lib/fbpixel.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
@@ -81,6 +82,12 @@ export default function ExhibitionBookingPage() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Booking failed");
+
+      fbTrack("Schedule", {
+        content_name: "Exhibition Booking",
+        content_category: exhibition?.title || slug,
+      });
+      fbTrack("Lead", { content_name: "Exhibition Booking" });
 
       setSuccess({
         name: name.trim(),

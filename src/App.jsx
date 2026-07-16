@@ -1,18 +1,29 @@
 // src/App.jsx
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { fbPageView } from "./lib/fbpixel.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
 
 function usePageViewTracker() {
   const location = useLocation();
   const prev = useRef(null);
+  const fbInitialDone = useRef(false);
 
   useEffect(() => {
     const path = location.pathname;
     if (path === prev.current) return;
+
+    // The Meta Pixel base code (index.html) already fires PageView once on the
+    // initial HTML load, so skip the first effect run and only fire on
+    // subsequent client-side route changes.
+    const isInitial = !fbInitialDone.current;
+    fbInitialDone.current = true;
+
     if (path.startsWith("/admin") || path.startsWith("/agent") || path === "/login") return;
     prev.current = path;
+
+    if (!isInitial) fbPageView();
 
     fetch(`${API_BASE}/public/pageview`, {
       method: "POST",

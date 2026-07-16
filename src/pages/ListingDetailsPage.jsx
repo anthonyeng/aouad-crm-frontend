@@ -1,6 +1,7 @@
 // src/pages/ListingDetailsPage.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { fbTrack } from "../lib/fbpixel.js";
 import { FaCamera, FaWhatsapp, FaCalendarAlt, FaShareAlt } from "react-icons/fa";
 import { FaBed, FaBath, FaCar, FaRulerCombined } from "react-icons/fa";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
@@ -233,6 +234,14 @@ export default function ListingDetailsPage() {
         }
 
         setItem(normalized);
+
+        fbTrack("ViewContent", {
+          content_type: "product",
+          content_ids: [String(normalized.id || id)],
+          content_name: normalized.title || undefined,
+          value: Number(normalized.startingPrice) || undefined,
+          currency: normalized.currency || "USD",
+        });
       } catch (e) {
         if (!alive) return;
         setItem(null);
@@ -434,6 +443,12 @@ export default function ListingDetailsPage() {
 
   const onWhatsApp = () => {
     if (!waPhone) return;
+
+    fbTrack("Lead", {
+      content_name: "Listing WhatsApp Inquiry",
+      content_ids: [String(listingId)],
+      content_type: "product",
+    });
 
     const msg = encodeURIComponent(
       `Hi, I'm interested in this property (${item?.title || "listing"}). Could you please share more details?\n\n${ogUrl}`

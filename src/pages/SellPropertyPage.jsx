@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./sellPropertyPage.css";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import heroBg from "../assets/sell-hero.jpg";
+import { fbTrack } from "../lib/fbpixel.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
 
@@ -98,6 +99,11 @@ export default function SellPropertyPage() {
                                     const propertyType = fd.get("propertyType");
                                     const propertyLocation = fd.get("propertyLocation");
                                     const details = fd.get("details");
+
+                                    fbTrack("Lead", {
+                                        content_name: "Sell Property Request",
+                                        content_category: propertyType || undefined,
+                                    });
 
                                     const waPhone = agentPhone.replace(/[\s+\-()]/g, "");
                                     const msg = [

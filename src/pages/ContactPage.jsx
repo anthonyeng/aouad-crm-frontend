@@ -1,6 +1,7 @@
 import "./contactPage.css";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { fbTrack } from "../lib/fbpixel.js";
 
 export default function ContactPage() {
     return (
@@ -110,6 +111,7 @@ export default function ContactPage() {
                                 className="contact-form"
                                 onSubmit={(e) => {
                                     e.preventDefault();
+                                    fbTrack("Lead", { content_name: "Contact Form" });
                                     // TODO: wire to backend/email
                                     alert("Submitted ✅");
                                 }}

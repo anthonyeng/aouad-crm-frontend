@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./scheduleCallPage.css";
+import { fbTrack } from "../lib/fbpixel.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
@@ -247,6 +248,12 @@ export default function ScheduleCallPage() {
             if (!res.ok) {
                 throw new Error(data?.error || "Failed to book meeting");
             }
+
+            fbTrack("Schedule", {
+                content_name: "Schedule a Call",
+                content_category: selectedAgent?.slug || undefined,
+            });
+            fbTrack("Lead", { content_name: "Schedule a Call" });
 
             setSubmitSuccess("Meeting booked successfully.");
             setForm({
